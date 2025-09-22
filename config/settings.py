@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-%tuzt1-fh3baeflo4aaa=7ooqy+^*2^q=rr63ko_rrb=)90!k9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['akmal.alwaysdata.net']
+ALLOWED_HOSTS = ["akmal.alwaysdata.net"]
 
 
 # Application definition
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'schedule'
+    'schedule',
 ]
 
 MIDDLEWARE = [

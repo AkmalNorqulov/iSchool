@@ -2,24 +2,36 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dars Jadvali</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
   <style>
+    :root {
+      --card-max: 700px;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+    *, *::before, *::after { box-sizing: inherit; }
+
     body {
       font-family: "Inter", "Segoe UI", sans-serif;
       background: linear-gradient(135deg, #667eea, #764ba2);
-      margin: 0;
-      padding: 40px;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
+      align-items: center; /* vertical center */
+      padding: 16px; /* smaller padding for mobile */
     }
 
     .container {
       background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-      width: 420px;
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      width: min(95vw, var(--card-max));
       overflow: hidden;
     }
 
@@ -29,21 +41,18 @@
       background: #f3f4f6;
       border-bottom: 1px solid #e5e7eb;
     }
-
     .tab {
       flex: 1;
-      padding: 16px 0;
+      padding: 12px 0;
       text-align: center;
       font-weight: 600;
       cursor: pointer;
       position: relative;
       transition: color 0.3s;
+      user-select: none;
+      font-size: 15px;
     }
-
-    .tab.active {
-      color: #4f46e5;
-    }
-
+    .tab.active { color: #4f46e5; }
     .tab.active::after {
       content: "";
       position: absolute;
@@ -57,43 +66,36 @@
 
     /* Content */
     .content {
-      padding: 24px 20px;
+      padding: 16px 14px;
     }
 
     h3 {
       text-align: center;
-      margin-bottom: 18px;
+      margin: 10px 0 14px;
       color: #1f2937;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 700;
     }
 
-    .subjects {
-      display: none;
-    }
-
-    .subjects.active {
-      display: block;
-    }
+    .subjects { display: none; }
+    .subjects.active { display: block; }
 
     .subject {
       display: flex;
       align-items: center;
       background: linear-gradient(135deg, #f9fafb, #f3f4f6);
       border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin-bottom: 12px;
-      font-size: 15px;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      font-size: 14px;
       font-weight: 500;
       color: #374151;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-
     .subject:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
-      background: #fdfdfd;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     }
 
     .lesson-number {
@@ -101,38 +103,66 @@
       color: white;
       font-weight: 600;
       border-radius: 50%;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: 12px;
+      margin-right: 10px;
       flex-shrink: 0;
-      box-shadow: 0 2px 6px rgba(79, 70, 229, 0.3);
+      font-size: 13px;
+      box-shadow: 0 1px 4px rgba(79, 70, 229, 0.3);
     }
 
     .lesson-subject {
       flex: 1;
+      min-width: 0;
     }
 
     .empty {
       text-align: center;
       color: #9ca3af;
       font-style: italic;
-      margin-top: 20px;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    /* Floating contact */
+    .contact {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      background: #ffffff;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.3s, background 0.3s;
+      z-index: 1000;
+    }
+    .contact:hover { background: #f0f0f0; transform: translateY(-2px); }
+    .contact a { color: #3559f8; text-decoration: none; }
+    .contact i { font-size: 20px; }
+
+    @media (max-width: 420px) {
+      .tab { font-size: 14px; padding: 10px 0; }
+      h3 { font-size: 16px; margin: 8px 0 12px; }
+      .subject { font-size: 13px; padding: 8px 12px; }
+      .lesson-number { width: 26px; height: 26px; font-size: 12px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Tabs -->
     <div class="tabs">
-      <div class="tab active" onclick="showTab('today')">Bugungi</div>
-      <div class="tab" onclick="showTab('tomorrow')">Ertangi</div>
+      <div class="tab active" data-tab="today">Bugungi</div>
+      <div class="tab" data-tab="tomorrow">Ertangi</div>
     </div>
 
     <div class="content">
-      <!-- Today -->
       <div id="today" class="subjects active">
         <h3>{{ today }}</h3>
         {% for lesson in today.lessons.all %}
@@ -145,7 +175,6 @@
         {% endfor %}
       </div>
 
-      <!-- Tomorrow -->
       <div id="tomorrow" class="subjects">
         <h3>{{ tomorrow }}</h3>
         {% for lesson in tomorrow.lessons.all %}
@@ -160,13 +189,20 @@
     </div>
   </div>
 
+  <div class="contact">
+    <a href="https://t.me/@akmal_norkulovv"><i class="fa-brands fa-telegram"></i></a>
+  </div>
+
   <script>
-    function showTab(id) {
-      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-      document.querySelectorAll(".subjects").forEach(s => s.classList.remove("active"));
-      document.querySelector(`[onclick="showTab('${id}')"]`).classList.add("active");
-      document.getElementById(id).classList.add("active");
-    }
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', function () {
+        const id = this.dataset.tab;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.subjects').forEach(s => s.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById(id).classList.add('active');
+      });
+    });
   </script>
 </body>
 </html>
